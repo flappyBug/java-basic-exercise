@@ -15,23 +15,27 @@ public class GrammarExercise {
 
     public static List<String> findCommonWordsWithSpace(String firstWordList, String secondWordList) {
         //在这编写实现代码
+        validate(firstWordList);
+        validate(secondWordList);
         firstWordList = firstWordList.toUpperCase();
         secondWordList = secondWordList.toUpperCase();
         Set<String> firstGroup = Arrays.stream(firstWordList.split(",")).collect(Collectors.toSet());
         SortedSet<String> commonWords = new TreeSet<>();
         for (String word : secondWordList.split(",")) {
             if (firstGroup.contains(word)) {
-                commonWords.add(toSpacedUpperCase(word));
+                commonWords.add(toSpaced(word));
             }
         }
         return new ArrayList<>(commonWords);
     }
 
-    private static String toSpacedUpperCase(String word) {
-        if (word.isEmpty()) {
-            return word;
+    private static void validate(String s) {
+        if (!s.matches("\\w+(,\\w+)*")) {
+            throw new RuntimeException("Invalid string list");
         }
-        word = word.toUpperCase();
+    }
+
+    private static String toSpaced(String word) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(word.charAt(0));
         for (int i = 1; i < word.length(); i++) {
